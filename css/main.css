@@ -40,6 +40,19 @@ hr {
     padding: 0;
 }
 
+.cats {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.catdivs {
+    max-width: 30%;
+}
+
+.image {
+    max-width: 100%;
+}
+
 /*
  * Remove the gap between audio, canvas, iframes,
  * images, videos and the bottom of their containers:
