@@ -1,34 +1,85 @@
 $(function(){
+    // Used to keep track of which cat we're displaying at all times
+    var q = 0;
 
-    // Manipulates the DOM and add divs for cats and counters
-    $('.cats').append('<div id="cat1" class="catdivs">', '<div id="cat2" class="catdivs">');
+    var clickyCats = {
+        'cats': [
+            {
+                'name': 'Cute cat',
+                'image': 'img/cutecat.jpg',
+                'id': 'cute',
+                'counter': 0
+            },
+            {
+                'name': 'Angry cat',
+                'image': 'img/angrycat.jpg',
+                'id': 'angry',
+                'counter': 0
+            },
+            {
+                'name': 'Bat cat',
+                'image': 'img/batcat.jpg',
+                'id': 'bat',
+                'counter': 0
+            },
+            {
+                'name': 'Drunk cat',
+                'image': 'img/drunkcat.jpeg',
+                'id': 'drunk',
+                'counter': 0
+            },
+            {
+                'name': 'Grumpy cat',
+                'image': 'img/grumpycat.jpg',
+                'id': 'grumpy',
+                'counter': 0
+            }
+        ],
+        // Appends the cat names to the menu
+        'display': function(){
+            clickyCats.cats.forEach(function(cat){
+                var catname = cat.name;
+                var catid = cat.id;
+                $('#catNames').append("<p id=" + catid + " class='name'>" + catname + "</br></p>");
+            })
+        }
+    };
 
-    $('#cat1').append('<div id="counter1">');
-    $('#cat2').append('<div id="counter2">');
+    clickyCats.display();
 
-    // Prepends the image of the cat on the page
-    $('#cat1').prepend('<img id="clickCat1" class="image" src="img/cutecat.jpg">');
-    $('#cat2').prepend('<img id="clickCat2" class="image" src="img/angrycat.jpg">');
+    $('.name').click(function(e){
+        $('#catPicture').empty();
+        $('#counterDiv').empty();
+        var test = this.id;
+        // Figures out which cat we selects, and appends the picture and the correct counter to the picture
+        for (var i = 0; i < clickyCats.cats.length; i++){
 
-    // Prepends the names for the cats
-    $('#cat1').prepend('<p>Cute Cat</p>');
-    $('#cat2').prepend('<p>Angry Cat</p>');
-
-    // Counts the number of clicks on the cat
-    var clickCounter1 = 0;
-    $('#clickCat1').click(function(e) {
-
-        clickCounter1++;
-        $('#counter1').text("You just clicked the cute cat " + clickCounter1 + " times!");
+            if (test == clickyCats.cats[i].id){
+                var picture = clickyCats.cats[i].image;
+                var pictureId = clickyCats.cats[i].id + "Picture";
+                $('#catPicture').append("<img src=" + picture + " id=" + pictureId + " class='image'>");
+                $('#counterDiv').append("You have clicked " + clickyCats.cats[i].name + " " + clickyCats.cats[i].counter + " times");
+                q = i;
+            }
+        }
 
     });
 
-    var clickCounter2 = 0;
-    $('#clickCat2').click(function(e) {
+    // Detects when we click the picture
+    $('#catPicture').click(function(e){
+        // Clears the counter before we append the new value
+        $('#counterDiv').empty();
+        // Figures out which cat it is based on the value of q which was defined in the catselector function
+        for (var t = 0; t < clickyCats.cats.length; t++){
+            if(q == t){
 
-        clickCounter2++;
-        $('#counter2').text("You just clicked the angry cat " + clickCounter2 + " times!");
+                clickyCats.cats[t].counter++;
+                $('#counterDiv').empty();
+                $('#counterDiv').append("You have clicked " + clickyCats.cats[t].name + " " + clickyCats.cats[t].counter + " times");
 
+            }
+        }
     });
+
 
 });
