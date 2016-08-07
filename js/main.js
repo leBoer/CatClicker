@@ -54,11 +54,46 @@ $(function(){
                         var pictureId = catObject[i].id + "Picture";
                         $('#catPicture').append("<img src=" + picture + " id=" + pictureId + " class='image'>");
                         $('#counterDiv').append("You have clicked " + catObject[i].name + " " + catObject[i].counter + " times");
+
                         q = i;
+
                     }
                 }
+                octupus.updateForm(q);
+            });
+            // Shows and hides the admin div
+            $('#adminButton').click(function(e){
+                if ($('.admin').attr("style")=="display:none"){
+                    $('.admin').attr("style", "display:inline");
+                } else {
+                    $('.admin').attr("style", "display:none");
+                }
+            });
 
-            })
+            // Fills in the admin div with the fields and the buttons. Starts out hidden.
+            $('.admin').append('<div class="field"><input type="text" value="Cat Name" id="nameField"></div>');
+            $('.admin').append('<div class="field"><input type="text" value="URL" id="urlField"></div>');
+            $('.admin').append('<div class="field"><input type="text" value="Number of Clicks" id="clickField"></div>');
+            $('.admin').append('<div><input type="button" value="Save" id="saveButton"><input type="button" value="Cancel" id="cancelButton"></div>');
+
+
+
+            // Updates the model with the new cat attributes
+            $('#saveButton').click(function(e){
+                if (typeof q !== 'undefined'){
+                    octupus.updateModel(q);
+                    octupus.updateForm(q);
+                }
+
+            });
+
+            // Cancels the input that hasn't been saved
+            $('#cancelButton').click(function(e){
+                if (typeof q !== 'undefined'){
+                    console.log(q);
+                    octupus.updateForm(q);
+                }
+            });
         },
 
         render: function(){
@@ -66,7 +101,11 @@ $(function(){
                 var catname = cat.name;
                 var catid = cat.id;
                 $('#catNames').append("<p id=" + catid + " class='name'>" + catname + "</br></p>");
-            })
+            });
+
+            // Appends the admin button and admin div. Admin div starts out as hidden
+            $('#catNames').append("<input type='button' value='Admin' id='adminButton'>");
+            $('#catNames').append("<div class='admin' style='display:none'>")
         }
     };
 
@@ -85,7 +124,7 @@ $(function(){
                         octupus.updateCounter(t);
                         $('#counterDiv').empty();
                         $('#counterDiv').append("You have clicked " + catObject[t].name + " " + catObject[t].counter + " times");
-
+                        octupus.updateForm(q);
                     }
                 }
             });
@@ -99,7 +138,7 @@ $(function(){
 
     // The Octupus //
     var octupus = {
-        //var q = 0;
+
         getCats: function(){
             return model.cats;
             //return test;
@@ -109,8 +148,24 @@ $(function(){
             model.cats[t].counter++;
         },
 
+        updateForm: function(q){
+            var catObject = octupus.getCats();
+            var catname = catObject[q].name;
+            var catimage = catObject[q].image;
+            var catcounter = catObject[q].counter;
+            $('.field').empty();
+            $('.admin').prepend('<div class="field"><input type="text" value=' + catcounter + ' id="clickField"></div>');
+            $('.admin').prepend('<div class="field"><input type="text" value=' + catimage + ' id="urlField"></div>');
+            $('.admin').prepend('<div class="field"><input type="text" value=' + catname + ' id="nameField"></div>');
+        },
+
+        updateModel: function(q){
+            model.cats[q].name = $('#nameField').val();
+            model.cats[q].image = $('#urlField').val();
+            model.cats[q].counter = $('#clickField').val();
+        },
+
         init: function(){
-            var q = 0;
             listview.init();
             pictureview.init();
 
