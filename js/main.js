@@ -154,9 +154,9 @@ $(function(){
             var catimage = catObject[q].image;
             var catcounter = catObject[q].counter;
             $('.field').empty();
-            $('.admin').prepend('<div class="field"><input type="text" value=' + catcounter + ' id="clickField"></div>');
-            $('.admin').prepend('<div class="field"><input type="text" value=' + catimage + ' id="urlField"></div>');
-            $('.admin').prepend('<div class="field"><input type="text" value=' + catname + ' id="nameField"></div>');
+            $('.admin').prepend('<div class="field"><input type="text" value="' + catcounter + '" id="clickField"></div>');
+            $('.admin').prepend('<div class="field"><input type="text" value="' + catimage + '" id="urlField"></div>');
+            $('.admin').prepend('<div class="field"><input type="text" value="' + catname + '" id="nameField"></div>');
         },
 
         updateModel: function(q){
